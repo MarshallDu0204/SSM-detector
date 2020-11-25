@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.DataDao">
+    <resultMap id="coorPoint" type="com.example.pojo.Coor">
+        <result column="lat" jdbcType="DOUBLE" property="lat" javaType="double"/>
+        <result column="lng" jdbcType="DOUBLE" property="lng" javaType="double"/>
+    </resultMap>
+
+    <select id="getNearbySmokingPoint"  resultMap="coorPoint">
+        SELECT lat,lng FROM data WHERE lat BETWEEN #{lat1} and #{lat2} AND lng BETWEEN #{lng1} and #{lng2} AND type = 1 AND time > #{time} LIMIT 100
+    </select>
+
+    <select id="getNearbyAllergyPoint"  resultMap="coorPoint">
+        SELECT lat,lng FROM data WHERE lat BETWEEN #{lat1} and #{lat2} AND lng BETWEEN #{lng1} and #{lng2} AND type = 2 LIMIT 100
+    </select>
+
+
+    <insert id="insertSmokingPoint">
+        INSERT INTO data VALUE(#{type},#{time},#{lat},#{lng})
+    </insert>
+
+    <insert id="insertAllergyPoint">
+        INSERT INTO data VALUE(#{type},#{time},#{lat},#{lng})
+    </insert>
+
+
+    <update id="updateSmokingPoint">
+        UPDATE data SET time = #{time} WHERE lat = #{lat} AND lng = #{lng} AND type = #{type}
+    </update>
+
+    <update id="updateAllergyPoint">
+        UPDATE data SET time = #{time} WHERE lat = #{lat} AND lng = #{lng} AND type = #{type}
+    </update>
+
+</mapper>
